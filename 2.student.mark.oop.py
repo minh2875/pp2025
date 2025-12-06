@@ -1,54 +1,74 @@
-students = []
-courses = []
-marks = {}
-def input_number_of_students():
-    n = int(input("Enter number of students: "))
-    return n
-def input_student_information():
-    student_id = input("Enter student ID: ")
-    name = input("Enter student name: ")
-    dob = input("Enter student date of birth (DD/MM/YYYY): ")
-    return (student_id, name, dob)
-def input_number_of_courses():
-    n = int(input("Enter number of courses: "))
-    return n
-def input_course_information():
-    course_id = input("Enter course ID: ")
-    name = input("Enter course name: ")
-    return (course_id, name)
-def input_marks_for_course(course_id):
-    for student in students:
-        mark = float(input(f"Enter mark for student {student[1]} (ID: {student[0]}): "))
-        if course_id not in marks:
-            marks[course_id] = {}
-        marks[course_id][student[0]] = mark
-def list_courses():
-    print("Courses:")
-    for course in courses:
-        print(f"ID: {course[0]}, Name: {course[1]}")
-def list_students():
-    print("Students:")
-    for student in students:
-        print(f"ID: {student[0]}, Name: {student[1]}, DoB: {student[2]}")
-def show_student_marks_for_course(course_id):
-    if course_id in marks:
-        print(f"Marks for course ID {course_id}:")
-        for student_id, mark in marks[course_id].items():
-            print(f"Student ID: {student_id}, Mark: {mark}")
-    else:
-        print("No marks recorded for this course.")
-# Main program
-num_students = input_number_of_students()
-for _ in range(num_students):
-    student_info = input_student_information()
-    students.append(student_info)
-num_courses = input_number_of_courses()
-for _ in range(num_courses):
-    course_info = input_course_information()
-    courses.append(course_info)
-list_students()
-list_courses()
-selected_course_id = input("Enter course ID to input marks: ")
-input_marks_for_course(selected_course_id)
-show_student_marks_for_course(selected_course_id)
+class Student:
+    def __init__(self, student_id, name, dob):
+        self.id = student_id
+        self.name = name
+        self.dob = dob
+        self.marks = {}
 
+    def __str__(self):
+        return f"ID: {self.id}, Name: {self.name}, DoB: {self.dob}"
+
+class Course:
+    def __init__(self, course_id, name):
+        self.id = course_id
+        self.name = name
+
+    def __str__(self):
+        return f"ID: {self.id}, Name: {self.name}"
+
+class ManagementSystem:
+    def __init__(self):
+        self.students = []
+        self.courses = []
+
+    def input_students(self):
+        print("Enter number of students: ")
+        n = int(input())
+        for i in range(n):
+            print(f"--- Entering info for student {i+1} ---")
+            s_id = input("Enter student ID: ")
+            s_name = input("Enter student name: ")
+            s_dob = input("Enter student DoB: ")
+            new_student = Student(s_id, s_name, s_dob)
+            self.students.append(new_student)
+
+    def input_courses(self):
+        print("Enter number of courses: ")
+        n = int(input())
+        for i in range(n):
+            print(f"--- Entering info for course {i+1} ---")
+            c_id = input("Enter course ID: ")
+            c_name = input("Enter course name: ")
+            new_course = Course(c_id, c_name)
+            self.courses.append(new_course)
+
+    def list_items(self):
+        for student in self.students:
+            print(student)
+        for course in self.courses:
+            print(course)
+
+    def input_marks(self):
+        course_id = input("\nEnter course ID to input marks for: ")
+        for student in self.students:
+            print(f"Enter mark for student: {student.name}")
+            mark_value = float(input())
+            student.marks[course_id] = mark_value
+
+    def show_marks(self):
+        course_id = input("\nEnter course ID to show marks: ")
+        print(f"Marks for course ID {course_id}:")
+        for student in self.students:
+            score = student.marks.get(course_id, "Not graded")
+            print(f"Student: {satudent.name}, Mark: {score}")
+
+    def run(self):
+        self.input_students()
+        self.input_courses()
+        self.list_items()
+        self.input_marks()
+        self.show_marks()
+
+if __name__ == "__main__":
+    system = ManagementSystem()
+    system.run()
